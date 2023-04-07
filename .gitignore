@@ -1,0 +1,6 @@
+.vscode
+main*.c
+*.gch
+*.txt
+a.out
+*.dSYM
