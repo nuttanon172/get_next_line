@@ -6,7 +6,7 @@
 /*   By: ntairatt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 10:43:48 by ntairatt          #+#    #+#             */
-/*   Updated: 2023/04/07 20:26:50 by ntairatt         ###   ########.fr       */
+/*   Updated: 2023/04/18 22:06:58 by ntairatt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,18 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*fs;
 	size_t	i;
-	size_t	s1_len;
-	size_t	s2_len;
 
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
+	if (s1 == NULL)
+	{
+		s1 = (char *)malloc(1 * sizeof(char));
+		*s1 = 0;
+	}
 	i = 0;
-	fs = (char *)malloc(((s1_len + s2_len + 1) * sizeof(char)));
+	fs = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char)));
 	if (!fs)
 		return (0);
 	while (*s1)
@@ -49,18 +50,18 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (fs);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	next_char(char *str, char c)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (*(s + i))
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		if (*(s + i) == (char)c)
-			return ((char *)s + i);
+		if (str[i] == c)
+			return (i + 1);
 		i++;
 	}
-	if (*(s + i) == (char)c)
-		return ((char *)s + i);
 	return (0);
 }
