@@ -6,67 +6,11 @@
 /*   By: ntairatt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 10:43:16 by ntairatt          #+#    #+#             */
-/*   Updated: 2023/04/18 22:57:00 by ntairatt         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:44:16 by ntairatt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/*size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*fs;
-	size_t	i;
-
-	if (s1 == NULL)
-	{
-		s1 = (char *)malloc(1 * sizeof(char));
-		*s1 = 0;
-	}
-	i = 0;
-	fs = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char)));
-	if (!fs || (!*s1 && !*s2))
-		return (0);
-	while (*s1)
-	{
-		fs[i] = *s1++;
-		i++;
-	}
-	while (*s2)
-	{
-		fs[i] = *s2++;
-		i++;
-	}
-	fs[i] = '\0';
-	return (fs);
-}
-
-int	next_char(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (i + 1);
-		i++;
-	}
-	return (0);
-}*/
 
 char	*split_line(char *buf)
 {
@@ -74,14 +18,15 @@ char	*split_line(char *buf)
 	int		i;
 
 	i = 0;
-	if (!buf)
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	line = (char *)malloc(sizeof(char) * (i + 2));
+	i = 0;
+	if (!line || !buf[i])
 	{
-		free(buf);
+		free(line);
 		return (NULL);
 	}
-	line = (char *)malloc(ft_strlen(buf) * sizeof(char));
-	if (!line)
-		return (NULL);
 	while (buf[i] && buf[i] != '\n')
 	{
 		line[i] = buf[i];
@@ -92,22 +37,31 @@ char	*split_line(char *buf)
 		line[i] = buf[i];
 		i++;
 	}
+	line[i] = '\0';
 	return (line);
 }
 
 char	*update_buf(char *buf)
 {
-	int	i;
-	int	j;
+	char	*new_buf;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = next_char(buf, '\n');
-	if (j <= 0)
+	if (j < 1)
+	{
+		free(buf);
 		return (NULL);
-	while(buf[j])
-		buf[i++] = buf[j++];
-	buf[i] = '\0';
-	return (buf);
+	}
+	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) - i + 1));
+	if (!new_buf)
+		return (NULL);
+	while (buf[j])
+		new_buf[i++] = buf[j++];
+	new_buf[i] = '\0';
+	free(buf);
+	return (new_buf);
 }
 
 char	*get_buf(int fd, char *buf)
@@ -139,9 +93,11 @@ char	*get_next_line(int fd)
 	static char	*buf;
 	char		*line;
 
-	if (BUFFER_SIZE <= 0)
+	if (BUFFER_SIZE < 1 || fd < 0 || fd > 1024)
 		return (NULL);
 	buf = get_buf(fd, buf);
+	if (!buf)
+		return (NULL);
 	line = split_line(buf);
 	buf = update_buf(buf);
 	return (line);

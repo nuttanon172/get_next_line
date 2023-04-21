@@ -6,7 +6,7 @@
 /*   By: ntairatt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 10:40:20 by ntairatt          #+#    #+#             */
-/*   Updated: 2023/04/13 17:22:52 by ntairatt         ###   ########.fr       */
+/*   Updated: 2023/04/21 10:28:37 by ntairatt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strjoin(char *left_str, char *buff);
 int		next_char(char *str, char c);
 
 #endif
