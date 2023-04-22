@@ -6,7 +6,7 @@
 /*   By: ntairatt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 10:43:16 by ntairatt          #+#    #+#             */
-/*   Updated: 2023/04/21 11:44:16 by ntairatt         ###   ########.fr       */
+/*   Updated: 2023/04/22 23:10:45 by ntairatt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*split_line(char *buf)
 	int		i;
 
 	i = 0;
-	while (buf[i] && buf[i] != '\n')
+	while (buf[i] != '\0' && buf[i] != '\n')
 		i++;
 	line = (char *)malloc(sizeof(char) * (i + 2));
 	i = 0;
@@ -27,7 +27,7 @@ char	*split_line(char *buf)
 		free(line);
 		return (NULL);
 	}
-	while (buf[i] && buf[i] != '\n')
+	while (buf[i] != '\0' && buf[i] != '\n')
 	{
 		line[i] = buf[i];
 		i++;
@@ -57,7 +57,7 @@ char	*update_buf(char *buf)
 	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) - i + 1));
 	if (!new_buf)
 		return (NULL);
-	while (buf[j])
+	while (buf[j] != '\0')
 		new_buf[i++] = buf[j++];
 	new_buf[i] = '\0';
 	free(buf);
@@ -73,7 +73,7 @@ char	*get_buf(int fd, char *buf)
 	new_line = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!new_line)
 		return (NULL);
-	while (next_char(buf, '\n') == 0 && n_read > 0)
+	while (n_read > 0)
 	{
 		n_read = read(fd, new_line, BUFFER_SIZE);
 		if (n_read == -1)
@@ -83,6 +83,8 @@ char	*get_buf(int fd, char *buf)
 		}
 		new_line[n_read] = '\0';
 		buf = ft_strjoin(buf, new_line);
+		if (next_char(buf, '\n'))
+			break ;
 	}
 	free(new_line);
 	return (buf);
