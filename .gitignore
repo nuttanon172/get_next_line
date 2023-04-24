@@ -5,4 +5,4 @@ main*.c
 a.out
 *.dSYM
 gnlTester
-
+Othe*
