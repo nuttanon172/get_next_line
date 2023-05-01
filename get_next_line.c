@@ -54,7 +54,7 @@ char	*update_buf(char *buf)
 		free(buf);
 		return (NULL);
 	}
-	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) - i + 1));
+	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) - j));
 	if (!new_buf)
 		return (NULL);
 	while (buf[j] != '\0')
