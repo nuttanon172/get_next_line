@@ -6,7 +6,7 @@
 /*   By: ntairatt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 10:40:20 by ntairatt          #+#    #+#             */
-/*   Updated: 2023/04/22 23:14:37 by ntairatt         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:58:09 by ntairatt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);
