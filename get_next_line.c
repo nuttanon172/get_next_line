@@ -12,58 +12,6 @@
 
 #include "get_next_line.h"
 
-char	*split_line(char *buf)
-{
-	char	*line;
-	int		i;
-
-	i = 0;
-	while (buf[i] != '\0' && buf[i] != '\n')
-		i++;
-	line = (char *)malloc(sizeof(char) * (i + 2));
-	i = 0;
-	if (!line || !buf[i])
-	{
-		free(line);
-		return (NULL);
-	}
-	while (buf[i] != '\0' && buf[i] != '\n')
-	{
-		line[i] = buf[i];
-		i++;
-	}
-	if (buf[i] == '\n')
-	{
-		line[i] = buf[i];
-		i++;
-	}
-	line[i] = '\0';
-	return (line);
-}
-
-char	*update_buf(char *buf)
-{
-	char	*new_buf;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = next_char(buf, '\n');
-	if (j < 1)
-	{
-		free(buf);
-		return (NULL);
-	}
-	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) - j));
-	if (!new_buf)
-		return (NULL);
-	while (buf[j] != '\0')
-		new_buf[i++] = buf[j++];
-	new_buf[i] = '\0';
-	free(buf);
-	return (new_buf);
-}
-
 char	*get_buf(int fd, char *buf)
 {
 	int		n_read;
@@ -90,12 +38,64 @@ char	*get_buf(int fd, char *buf)
 	return (buf);
 }
 
+char	*split_line(char *buf)
+{
+	char	*line;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!buf[i])
+		return (NULL);
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	if (buf[i] == '\n')
+		i++;
+	line = (char *)malloc(sizeof(char) * (i + 1));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (buf[j] && buf[j] != '\n')
+		line[i++] = buf[j++];
+	if (buf[j] == '\n')
+		line[i++] = buf[j++];
+	line[i] = '\0';
+	return (line);
+}
+
+char	*update_buf(char *buf)
+{
+	char	*new_buf;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = next_char(buf, '\n');
+	if (j < 1)
+	{
+		free(buf);
+		return (NULL);
+	}
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) + 1 - i));
+	if (!new_buf)
+		return (NULL);
+	i = 0;
+	while (buf[j] != '\0')
+		new_buf[i++] = buf[j++];
+	new_buf[i] = '\0';
+	free(buf);
+	return (new_buf);
+}
+
 char	*get_next_line(int fd)
 {
-	static char	*buf[1024];
+	static char	*buf[4096];
 	char		*line;
 
-	if (BUFFER_SIZE < 1 || fd < 0 || fd > 1024)
+	if (BUFFER_SIZE < 1 || fd < 0 || fd > 4096)
 		return (NULL);
 	buf[fd] = get_buf(fd, buf[fd]);
 	if (!buf[fd])
