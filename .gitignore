@@ -6,4 +6,4 @@ a.out
 *.dSYM
 gnlTester
 Othe*
-
+.gitignore
