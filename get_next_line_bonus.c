@@ -77,13 +77,13 @@ char	*update_buf(char *buf)
 		free(buf);
 		return (NULL);
 	}
-	while (buf[i] && buf[i] != '\n')
+	while (buf[i] != '\n')
 		i++;
-	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) + 1 - i));
+	new_buf = (char *)malloc(sizeof(char) * (ft_strlen(buf) - i));
 	if (!new_buf)
 		return (NULL);
 	i = 0;
-	while (buf[j] != '\0')
+	while (buf[j])
 		new_buf[i++] = buf[j++];
 	new_buf[i] = '\0';
 	free(buf);
